@@ -1,0 +1,41 @@
+{{ range $i, $alert := .Alerts }}
+
+{{ if ne $i 0 -}}
+---
+{{ end }}
+
+{{ if eq $alert.Status "firing" }}
+> <font color=#D32F2F>`[F] {{ $alert.Labels.alertname }}`</font>
+{{ else if eq $alert.Status "resolved"}}
+> <font color=#388E3C>`[R] {{ $alert.Labels.alertname }}`</font>
+{{ end }}
+
+{{ range $key, $value := $alert.Labels -}}
+{{ if and (ne $key "alertname") (ne $key "alertname") -}}
+>     {{ $key }}: {{ $value }}
+{{- end }}
+{{ end }}
+
+{{ if $alert.Labels.severity }}
+> `Severity: {{ $alert.Labels.severity }}`
+{{ end }}
+
+> `Start at: {{ timeFormat ($alert.StartsAt) }}`
+
+{{ if eq $alert.Status "firing" }}
+> `Duration: {{ timeFromNow ($alert.StartsAt) }}`
+{{ else if eq $alert.Status "resolved"}}
+> `End at:   {{ timeFormat ($alert.EndsAt) }}`
+
+> `Duration: {{ timeDuration ($alert.StartsAt) ($alert.EndsAt) }}`
+{{ end }}
+
+> `Event ID: {{ $alert.Fingerprint }}`
+
+{{ range $key, $value := $alert.Annotations -}}
+{{ if not (and (eq $alert.Status "resolved") (eq $key "current")) }}
+> `{{ $key }}: {{ $value }}`
+{{ end }}
+{{ end }}
+
+{{ end }}
