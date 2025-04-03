@@ -33,7 +33,7 @@
 > `Event ID: {{ $alert.Fingerprint }}`
 
 {{ range $key, $value := $alert.Annotations -}}
-{{ if not (and (eq $alert.Status "resolved") (eq $key "current")) }}
+{{ if not (and (eq $alert.Status "resolved") (eq $key "value")) }}
 > `{{ $key }}: {{ $value }}`
 {{ end }}
 {{ end }}
