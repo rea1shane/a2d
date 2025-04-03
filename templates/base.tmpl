@@ -11,7 +11,7 @@
 {{ end }}
 
 {{ range $key, $value := $alert.Labels -}}
-{{ if and (ne $key "alertname") (ne $key "alertname") -}}
+{{ if and (ne $key "alertname") (ne $key "severity") -}}
 >     {{ $key }}: {{ $value }}
 {{- end }}
 {{ end }}
